@@ -30,6 +30,10 @@ print:
    mov al, cl
    int 0x10
    ret
+HALT:
+   jmp halt
+
+msg db "Loading...", 0
 
 times 510 - ($ - $$) db 0
 dw 0xAA55
