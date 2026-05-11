@@ -9,4 +9,3 @@ void drawsquare(int x, int y, int width, int height, unsigned char color, int fi
 void drawcircle(int xc, int yc, int r, unsigned char color);
 
 #endif
-return 0;
