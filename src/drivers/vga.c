@@ -1,3 +1,4 @@
+#include "stdint.h"
 void printl(const char *str){
    unsigned short *vmemory = (unsigned short *)0xb8000;
    unsigned char color = 0x0f;
