@@ -1,32 +1,17 @@
-; ==================================================================
-; ESTÁGIO 2: Código Principal (Carregado em 0x7E00)
-; ==================================================================
+; Fragmento do stage2.asm
 [ORG 0x7E00]
 [BITS 16]
 
-estagio2_inicio:
-    mov si, msg_sucesso
-    call imprimir_texto
+    ; Carrega o Estágio 3 (Setor 3 do disco) para o endereço 0x8000
+    mov bx, 0x8000      ; Endereço de memória de destino
+    mov ah, 0x02        ; Função de leitura da BIOS
+    mov al, 1           ; Quantidade de setores (1 setor)
+    mov ch, 0
+    mov dh, 0
+    mov cl, 3           ; Setor 3 do disco
+    mov dl, [0x7C00 + drive_boot_offset] ; Ou passe o drive salvo no stage1
 
-    ; Aqui você pode adicionar funções mais complexas:
-    ; - Mudar para Modo Protegido (32 bits)
-    ; - Carregar o Kernel do seu sistema operacional
-    ; - Detectar a memória RAM via BIOS (int 0x15, E820)
-
-loop_infinito:
-    cli
-    hlt
-    jmp loop_infinito
-
-imprimir_texto:
-    mov ah, 0x0E
-.loop:
-    lodsb
-    cmp al, 0
-    je .fim
-    int 0x10
-    jmp .loop
-.fim:
-    ret
-
-msg_sucesso: db 'Estagio 2: Executado com sucesso a partir de 0x7E00!', 0x0D, 0x0A, 0
+    int 0x13
+    
+    ; Salta para o Estágio 3
+    jmp 0x8000
