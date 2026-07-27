@@ -1,36 +1,32 @@
+; ==================================================================
+; ESTÁGIO 2: Código Principal (Carregado em 0x7E00)
+; ==================================================================
+[ORG 0x7E00]
 [BITS 16]
-[ORG 0x7c00]
 
-init:
-   xor ax, ax
-   mov es, ax
-   mov ss, ax
-   mov ds, ax
-   mov sp, 0x7c00
-   mov bx 0x7e00
+estagio2_inicio:
+    mov si, msg_sucesso
+    call imprimir_texto
 
-print:
-   mov al, [si]
-   mov ah, 0x0e
-   int 0x10
+    ; Aqui você pode adicionar funções mais complexas:
+    ; - Mudar para Modo Protegido (32 bits)
+    ; - Carregar o Kernel do seu sistema operacional
+    ; - Detectar a memória RAM via BIOS (int 0x15, E820)
 
-int 0x13
+loop_infinito:
+    cli
+    hlt
+    jmp loop_infinito
 
-disk_error:
-   mov si, 'an error was been ocurred when tried to boot'
-   call print
-   hlt
+imprimir_texto:
+    mov ah, 0x0E
+.loop:
+    lodsb
+    cmp al, 0
+    je .fim
+    int 0x10
+    jmp .loop
+.fim:
+    ret
 
-mov ah, 0x02
-mov al, 1
-mov ch, 0
-mov cl, 2
-mov dh, 0
-mov dl, [disk_drive]
-halt:
-   jmp halt
-
-jc disk_error
-
-times 510 - ($ - $$) db 0
-dw 0xAA55
+msg_sucesso: db 'Estagio 2: Executado com sucesso a partir de 0x7E00!', 0x0D, 0x0A, 0
