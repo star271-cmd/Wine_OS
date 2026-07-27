@@ -1,36 +1,17 @@
+; Fragmento do stage2.asm
+[ORG 0x7E00]
 [BITS 16]
-[ORG 0x7c00]
 
-init:
-   xor ax, ax
-   mov es, ax
-   mov ss, ax
-   mov ds, ax
-   mov sp, 0x7c00
-   mov bx 0x7e00
+    ; Carrega o Estágio 3 (Setor 3 do disco) para o endereço 0x8000
+    mov bx, 0x8000      ; Endereço de memória de destino
+    mov ah, 0x02        ; Função de leitura da BIOS
+    mov al, 1           ; Quantidade de setores (1 setor)
+    mov ch, 0
+    mov dh, 0
+    mov cl, 3           ; Setor 3 do disco
+    mov dl, [0x7C00 + drive_boot_offset] ; Ou passe o drive salvo no stage1
 
-print:
-   mov al, [si]
-   mov ah, 0x0e
-   int 0x10
-
-int 0x13
-
-disk_error:
-   mov si, 'an error was been ocurred when tried to boot'
-   call print
-   hlt
-
-mov ah, 0x02
-mov al, 1
-mov ch, 0
-mov cl, 2
-mov dh, 0
-mov dl, [disk_drive]
-halt:
-   jmp halt
-
-jc disk_error
-
-times 510 - ($ - $$) db 0
-dw 0xAA55
+    int 0x13
+    
+    ; Salta para o Estágio 3
+    jmp 0x8000
