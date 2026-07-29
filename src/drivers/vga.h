@@ -1,3 +1,22 @@
+//#ifndef VGA_H
+//#define VGA_H
+
+//typedef unsigned char uint8_t;
+//typedef unsigned short uint16_t;
+
+//#define COR_PRETO 0
+//#define COR_VERDE 2
+//#define COR_VERMELHO 4
+//#define COR_BRANCO 15
+
+//void limpar_tela();
+//void imprimir_caractere(char c, uint8_t cor_texto, uint8_t cor_fundo);
+//void imprimir_string(const char* str, uint8_t cor_texto, uint8_t cor_fundo);
+//int get_cursor_x();
+//int get_cursor_y();
+//void set_cursor_x(int x);
+
+//#endif
 #ifndef VGA_H
 #define VGA_H
 #include "stdint.h"
